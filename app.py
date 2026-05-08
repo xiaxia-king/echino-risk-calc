@@ -127,11 +127,11 @@ with col2:
 with col3:
     st.subheader("🏕️ 环境与习惯 (Environment & Habits)")
     input_data['RWD'] = dict_freq_often[st.selectbox("饮用生水频率 (RWD: Drinking raw water)", list(dict_freq_often.keys()), index=2)]
-    input_data['HSWA'] = dict_freq_often[st.selectbox("野生动物出现 (HSWA: With wild animals around the house)", list(dict_freq_often.keys()), index=2)]
+    input_data['HSWA'] = dict_freq_often[st.selectbox("家周围野生动物出现 (HSWA: With wild animals around the house)", list(dict_freq_often.keys()), index=2)]
     input_data['DWSM'] = dict_dwsm[st.selectbox("储水方式 (DWSM: Drinking water storage mode)", list(dict_dwsm.keys()))]
     input_data['GM'] = dict_gm[st.selectbox("放牧方式 (GM: Grazing mode)", list(dict_gm.keys()), index=6)]
     input_data['HBE'] = dict_hbe[st.selectbox("饭前洗手 (HBE: Handwashing before eating)", list(dict_hbe.keys()), index=2)]
-    input_data['RMR'] = dict_yes_no_0_yes[st.selectbox("读过宣教文章 (RMR: Read relevant materials)", list(dict_yes_no_0_yes.keys()), index=1)]
+    input_data['RMR'] = dict_yes_no_0_yes[st.selectbox("读过包虫病宣教文章 (RMR: Read relevant materials)", list(dict_yes_no_0_yes.keys()), index=1)]
     input_data['Alcohol'] = dict_yes_no_0_yes[st.selectbox("是否饮酒 (Alcohol consumption)", list(dict_yes_no_0_yes.keys()), index=1)]
 
 # ==========================================
