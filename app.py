@@ -118,17 +118,18 @@ with col2:
         raw_lri = float(sum([int(re.search(r'\((\d+)分\)', q).group(1)) for q in [ql1, ql2, ql3]]))
     input_data['LRI'] = (raw_lri - LRI_MEAN) / LRI_SCALE
 
-    input_data['NYWS'] = dict_yes_no_0_yes[st.selectbox("野外游泳史 (NYWS: Swimming in the wild)", list(dict_yes_no_0_yes.keys()), index=1)]
-    input_data['HSS'] = dict_yes_no_0_yes[st.selectbox("附近屠宰场 (HSS: Slaughterhouse around the house)", list(dict_yes_no_0_yes.keys()), index=1)]
+    input_data['NYWS'] = dict_yes_no_0_yes[st.selectbox("近一年野外游泳史 (NYWS: Swimming in the wild)", list(dict_yes_no_0_yes.keys()), index=1)]
+    input_data['HSS'] = dict_yes_no_0_yes[st.selectbox("家周围是否有屠宰场或肉店
+ (HSS: Slaughterhouse around the house)", list(dict_yes_no_0_yes.keys()), index=1)]
     input_data['DCF'] = dict_dcf[st.selectbox("与狗接触频率 (DCF: Dog Contact Frequency)", list(dict_dcf.keys()))]
-    input_data['CRVF'] = dict_freq_often[st.selectbox("喂生脏器频率 (CRVF: Canines feed raw livestock viscera)", list(dict_freq_often.keys()), index=2)]
-    input_data['CDOF'] = dict_yes_no_0_yes[st.selectbox("病变脏器喂狗 (CDOF: Feeding canines with diseased organs)", list(dict_yes_no_0_yes.keys()), index=1)]
+    input_data['CRVF'] = dict_freq_often[st.selectbox("给狗喂食生的家畜脏器 (CRVF: Canines feed raw livestock viscera)", list(dict_freq_often.keys()), index=2)]
+    input_data['CDOF'] = dict_yes_no_0_yes[st.selectbox("家畜病变脏器喂狗 (CDOF: Feeding canines with diseased organs)", list(dict_yes_no_0_yes.keys()), index=1)]
 
 with col3:
     st.subheader("🏕️ 环境与习惯 (Environment & Habits)")
-    input_data['RWD'] = dict_freq_often[st.selectbox("饮用生水频率 (RWD: Drinking raw water)", list(dict_freq_often.keys()), index=2)]
+    input_data['RWD'] = dict_freq_often[st.selectbox("饮用未煮沸的水 (RWD: Drinking raw water)", list(dict_freq_often.keys()), index=2)]
     input_data['HSWA'] = dict_freq_often[st.selectbox("家周围野生动物出现 (HSWA: With wild animals around the house)", list(dict_freq_often.keys()), index=2)]
-    input_data['DWSM'] = dict_dwsm[st.selectbox("储水方式 (DWSM: Drinking water storage mode)", list(dict_dwsm.keys()))]
+    input_data['DWSM'] = dict_dwsm[st.selectbox("饮用水储存方式 (DWSM: Drinking water storage mode)", list(dict_dwsm.keys()))]
     input_data['GM'] = dict_gm[st.selectbox("放牧方式 (GM: Grazing mode)", list(dict_gm.keys()), index=6)]
     input_data['HBE'] = dict_hbe[st.selectbox("饭前洗手 (HBE: Handwashing before eating)", list(dict_hbe.keys()), index=2)]
     input_data['RMR'] = dict_yes_no_0_yes[st.selectbox("读过包虫病宣教文章 (RMR: Read relevant materials)", list(dict_yes_no_0_yes.keys()), index=1)]
