@@ -47,7 +47,6 @@ if model is None:
 DRI_MEAN, DRI_SCALE = 2.1500712838598335, 3.4787767539870194
 LRI_MEAN, LRI_SCALE = 1.4454490883169506, 2.3666996986490885
 
-# 严格对齐基线表翻译 (Align with Baseline Table)
 dict_region = {
     "1=西宁市 (Xining City)": 1, "2=海东市 (Haidong City)": 2, "3=海西州 (Haixi Prefecture)": 3, 
     "4=海南州 (Hainan Prefecture)": 4, "5=海北州 (Haibei Prefecture)": 5, "6=黄南州 (Huangnan Prefecture)": 6, 
@@ -64,7 +63,6 @@ dict_yes_no_0_yes = {"是 (Yes)": 0, "否 (No)": 1}
 dict_yes_no_1_yes = {"无 (None/No)": 0, "有 (Yes)": 1}
 dict_pck = {"合格 (Qualified)": 1, "不合格 (Unqualified)": 0}
 
-# 频率字典对齐 (Frequency Alignment)
 dict_hbe = {"从不 (Never)": 0, "偶尔 (Sometimes)": 1, "每次 (Every time)": 2}
 dict_dcf = {"无接触 (No Contact)": 0, "偶尔抚摸 (Occasionally Pet)": 1, "经常搂抱/抚摸 (Frequent Hugging/Petting)": 2}
 dict_freq_often = {"经常 (Often)": 0, "偶尔 (Sometimes)": 1, "从不 (Never)": 2}
@@ -95,27 +93,49 @@ with col1:
 
 with col2:
     st.subheader("🐕 动物接触与指数 (Animal Contacts)")
+    
+    # 恢复原汁原味的养狗计算逻辑
     dog_choice = st.selectbox("是否养狗 (Dog ownership)", ["是 (Yes)", "否 (No)"], index=1)
     input_data['Dog_ownership'] = 0 if "Yes" in dog_choice else 1
     
     raw_dri = 0.0
     if "Yes" in dog_choice:
-        q1 = st.selectbox("1. 养狗方式 (Rearing method)", ["固定/拴养 (0分)", "散养 (3分)"])
-        q2 = st.selectbox("2. 进入厨房 (Enters kitchen)", ["经常 (3分)", "偶尔 (1分)", "从不 (0分)"])
-        q3 = st.selectbox("3. 养狗目的 (Purpose)", ["放牧 (3分)", "看家 (2分)", "宠物 (0分)"])
-        q4 = st.selectbox("4. 犬粪处理 (Feces disposal)", ["不处理 (3分)", "肥料 (2分)", "焚烧/深埋 (0分)"])
-        q5 = st.selectbox("5. 驱虫频率 (Deworming)", ["定期 (0分)", "偶尔 (2分)", "从不 (3分)"])
-        raw_dri = float(sum([int(re.search(r'\((\d+)分\)', q).group(1)) for q in [q1, q2, q3, q4, q5]]))
+        st.info("👇 请填写详细养犬管理行为：")
+        q1_dog = st.selectbox("1. 养狗方式 (Rearing method)", ["固定/拴养 (0分)", "散养 (3分)"])
+        q2_dog = st.selectbox("2. 进入厨房 (Enters kitchen)", ["经常 (3分)", "偶尔 (1分)", "从不 (0分)"])
+        q3_dog = st.selectbox("3. 养狗目的 (Purpose)", ["放牧 (3分)", "看家 (2分)", "宠物 (0分)"])
+        q4_dog = st.selectbox("4. 犬粪处理 (Feces disposal)", ["不处理 (3分)", "作肥料 (2分)", "焚烧/深埋 (0分)"])
+        q5_dog = st.selectbox("5. 驱虫频率 (Deworming)", ["定期 (0分)", "偶尔 (2分)", "从不 (3分)"])
+        
+        score1 = int(re.search(r'\((\d+)分\)', q1_dog).group(1))
+        score2 = int(re.search(r'\((\d+)分\)', q2_dog).group(1))
+        score3 = int(re.search(r'\((\d+)分\)', q3_dog).group(1))
+        score4 = int(re.search(r'\((\d+)分\)', q4_dog).group(1))
+        score5 = int(re.search(r'\((\d+)分\)', q5_dog).group(1))
+        
+        raw_dri = float(score1 + score2 + score3 + score4 + score5)
+        st.write(f"*当前计算的 DRI 原始分为: {raw_dri}*")
+        
     input_data['DRI'] = (raw_dri - DRI_MEAN) / DRI_SCALE
 
+    # 恢复原汁原味的养家畜计算逻辑
     live_choice = st.selectbox("是否养家畜 (Livestock ownership)", ["是 (Yes)", "否 (No)"], index=1)
     input_data['Livestock_ownership'] = 0 if "Yes" in live_choice else 1
+    
     raw_lri = 0.0
     if "Yes" in live_choice:
+        st.info("👇 请填写详细家畜管理行为：")
         ql1 = st.selectbox("1. 家畜驱虫 (Livestock deworming)", ["定期 (0分)", "偶尔 (2分)", "从不 (3分)"])
         ql2 = st.selectbox("2. 共用水源 (Shared water source)", ["是 (3分)", "否 (0分)"])
         ql3 = st.selectbox("3. 兽医治疗 (Veterinary treatment)", ["经常 (0分)", "偶尔 (2分)", "从不 (3分)"])
-        raw_lri = float(sum([int(re.search(r'\((\d+)分\)', q).group(1)) for q in [ql1, ql2, ql3]]))
+        
+        score6 = int(re.search(r'\((\d+)分\)', ql1).group(1))
+        score7 = int(re.search(r'\((\d+)分\)', ql2).group(1))
+        score8 = int(re.search(r'\((\d+)分\)', ql3).group(1))
+        
+        raw_lri = float(score6 + score7 + score8)
+        st.write(f"*当前计算的 LRI 原始分为: {raw_lri}*")
+        
     input_data['LRI'] = (raw_lri - LRI_MEAN) / LRI_SCALE
 
     input_data['NYWS'] = dict_yes_no_0_yes[st.selectbox("近一年野外游泳史 (NYWS: Swimming in the wild)", list(dict_yes_no_0_yes.keys()), index=1)]
@@ -135,34 +155,48 @@ with col3:
     input_data['Alcohol'] = dict_yes_no_0_yes[st.selectbox("是否饮酒 (Alcohol consumption)", list(dict_yes_no_0_yes.keys()), index=1)]
 
 # ==========================================
-# 5. 预测与报告 (Prediction & Report)
+# 5. 预测引擎与评估报告 (Prediction & Report)
 # ==========================================
 st.markdown("---")
 _, center_col, _ = st.columns([1, 2, 1])
 if center_col.button("🚀 开始评估 (Start Risk Assessment)", type="primary", use_container_width=True):
     features_order = ["Region", "Ethnicity", "Education_Level", "Occupation", "Religious_Belief", "Monthly_income", "Chronic_illness_history", "PCK", "Dog_ownership", "DRI", "Livestock_ownership", "LRI", "NYWS", "HSS", "DCF", "CRVF", "CDOF", "RWD", "HSWA", "DWSM", "GM", "HBE", "RMR", "Alcohol"]
     input_df = pd.DataFrame([input_data], columns=features_order)
+    
+    # 恢复原汁原味的透视眼调试工具
+    with st.expander("🛠️ 开发者核对模式：点击查看传给底层的真实数据"):
+        st.write("请将下面这一行数字，与你 test_data.xlsx 里的那名患者数据进行逐列严格核对：")
+        st.dataframe(input_df)
+
     probability = model.predict_proba(input_df)[0][1]
 
     st.subheader("📊 评估报告与干预指南 (Report & Guidelines)")
 
-    # 仪表盘 UI (Gauge Chart)
+    # 修复仪表盘：恢复动态指针 (value=probability*100) 和正确的颜色逻辑
     fig = go.Figure(go.Indicator(
         mode = "gauge+number",
-        value = probability * 100,
-        number = {'suffix': "%", 'font': {'size': 40}},
+        value = probability * 100,  # 这里的 value 控制黑色指针的位置
+        number = {'suffix': "%", 'font': {'size': 40, 'color': '#333333'}},
         title = {'text': "Overall Probability of Infection", 'font': {'size': 20}},
         gauge = {
-            'axis': {'range': [0, 100]},
+            'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': "darkblue"},
+            'bar': {'color': "rgba(0,0,0,0)"}, # 隐藏粗条，只用指针
+            'bgcolor': "white",
+            'borderwidth': 2,
+            'bordercolor': "gray",
             'steps': [
-                {'range': [0, 20], 'color': "#e8f5e9"},      
-                {'range': [20, 46.8], 'color': "#fff3e0"},   
-                {'range': [46.8, 100], 'color': "#ffebee"}   
+                {'range': [0, 20], 'color': "#e8f5e9"},      # 浅绿：低风险
+                {'range': [20, 46.8], 'color': "#fff3e0"},   # 浅黄：中风险
+                {'range': [46.8, 100], 'color': "#ffebee"}   # 浅红：高风险
             ],
-            'threshold': {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 46.8}
+            'threshold': {
+                'line': {'color': "black", 'width': 4}, # 这是那个动态滑动的黑色指针
+                'thickness': 0.75,
+                'value': probability * 100
+            }
         }
     ))
-    fig.update_layout(height=300, margin=dict(l=20, r=20, t=50, b=20))
+    fig.update_layout(height=350, margin=dict(l=20, r=20, t=50, b=20))
     st.plotly_chart(fig, use_container_width=True)
 
     if probability >= 0.468:
@@ -179,9 +213,11 @@ if center_col.button("🚀 开始评估 (Start Risk Assessment)", type="primary"
             st.markdown("2. **源头管控 (Source Control)**：发现生喂或病变脏器喂狗行为。必须纠正，强调病死畜脏器的深埋或无害化处理。<br>*(Feeding raw or diseased organs to dogs was identified. Immediate correction is mandatory, emphasizing deep burial or incineration of diseased viscera.)*", unsafe_allow_html=True)
         if raw_dri >= 4.0:
             st.markdown("3. **犬只管理 (Dog Management)**：犬只风险指数(DRI)较高。需强制指导其进行犬只定期驱虫及粪便处理。<br>*(High DRI score requires mandatory deworming and safe disposal of dog feces.)*", unsafe_allow_html=True)
-        if input_data['RWD'] in [0, 1]:
+        if input_data['RWD'] in [0, 1] or input_data['DWSM'] in [1, 2]:
             st.markdown("4. **水源安全 (Water Safety)**：存在饮用生水风险。建议普及饮水安全知识，倡导彻底煮沸后饮用。<br>*(Risk of raw water consumption. Advocate for boiling water and public hygiene knowledge.)*", unsafe_allow_html=True)
-    
+        if input_data['GM'] in [0, 4]:
+            st.markdown("5. **环境暴露 (Environment Exposure)**：处于高暴露放牧模式。建议在游牧期间加强个人防护及手卫生。<br>*(High-exposure grazing mode detected. Strengthening personal protection and hand hygiene is recommended.)*", unsafe_allow_html=True)
+            
     elif probability >= 0.20:
         st.markdown(f"""<div class="report-box mid-risk"><h3>🔔 中等风险 (Intermediate Risk)</h3><p>建议增加社区随访频次。 <i>(Increased community follow-up frequency recommended.)</i></p></div>""", unsafe_allow_html=True)
     else:
