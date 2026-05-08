@@ -119,8 +119,7 @@ with col2:
     input_data['LRI'] = (raw_lri - LRI_MEAN) / LRI_SCALE
 
     input_data['NYWS'] = dict_yes_no_0_yes[st.selectbox("近一年野外游泳史 (NYWS: Swimming in the wild)", list(dict_yes_no_0_yes.keys()), index=1)]
-    input_data['HSS'] = dict_yes_no_0_yes[st.selectbox("家周围是否有屠宰场或肉店
- (HSS: Slaughterhouse around the house)", list(dict_yes_no_0_yes.keys()), index=1)]
+    input_data['HSS'] = dict_yes_no_0_yes[st.selectbox("家周围是否有屠宰场或肉店 (HSS: Slaughterhouse around the house)", list(dict_yes_no_0_yes.keys()), index=1)]
     input_data['DCF'] = dict_dcf[st.selectbox("与狗接触频率 (DCF: Dog Contact Frequency)", list(dict_dcf.keys()))]
     input_data['CRVF'] = dict_freq_often[st.selectbox("给狗喂食生的家畜脏器 (CRVF: Canines feed raw livestock viscera)", list(dict_freq_often.keys()), index=2)]
     input_data['CDOF'] = dict_yes_no_0_yes[st.selectbox("家畜病变脏器喂狗 (CDOF: Feeding canines with diseased organs)", list(dict_yes_no_0_yes.keys()), index=1)]
